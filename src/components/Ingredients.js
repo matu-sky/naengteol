@@ -36,8 +36,8 @@ function Ingredients({ navigate, ingredients, setIngredients, setRecipes, apiKey
     "time": "조리시간(예:15분)",
     "difficulty": "난이도(쉬움/보통/어려움)",
     "calories": "칼로리(예:350kcal)",
-    "ingredients": ["재료1", "재료2"],
-    "steps": ["1단계", "2단계", "3단계"]
+    "ingredients": ["재료1 적정량(예: 돼지고기 200g)", "재료2 적정량(예: 고춧가루 1큰술)"],
+    "steps": ["1단계: 재료 용량을 정확히 포함해서 설명 (예: 고춧가루 1큰술, 간장 2큰술을 섞어 양념을 만듭니다)", "2단계 설명", "3단계 설명"]
   }
 ]`
               }]
