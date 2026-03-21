@@ -14,6 +14,7 @@ body {
 .app {
   width: 100%;
   max-width: 100%;
+  width: 100%;
   min-height: 100vh;
   background: #fff;
 }
@@ -21,6 +22,7 @@ body {
 .screen {
   padding: 20px;
   padding-bottom: 40px;
+  width: 100%;
 }
 
 /* 헤더 */

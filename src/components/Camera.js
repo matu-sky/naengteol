@@ -67,7 +67,6 @@ function Camera({ navigate, setIngredients, apiKey }) {
           ref={fileInputRef}
           type="file"
           accept="image/*"
-          
           onChange={handleImageUpload}
           style={{ display: 'none' }}
         />
@@ -76,9 +75,18 @@ function Camera({ navigate, setIngredients, apiKey }) {
       {error && <p className="error">{error}</p>}
 
       <div className="button-group">
-        <button className="main-btn secondary" onClick={() => fileInputRef.current.click()}>
-          🖼️ 사진 선택 / 촬영
-        </button>
+        <button className="main-btn secondary" onClick={() => {
+  fileInputRef.current.removeAttribute('capture');
+  fileInputRef.current.click();
+}}>
+  🖼️ 파일에서 선택
+</button>
+<button className="main-btn primary" onClick={() => {
+  fileInputRef.current.setAttribute('capture', 'environment');
+  fileInputRef.current.click();
+}}>
+  📷 카메라로 촬영
+  </button>
         {image && (
           <button className="main-btn primary" onClick={analyzeImage} disabled={loading}>
             {loading ? '🔍 재료 분석 중...' : '🔍 재료 분석하기'}
