@@ -48,15 +48,33 @@ body {
   margin-top: 4px;
 }
 
+/* 헤더 네비게이션 */
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
 .back-btn {
   background: none;
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   color: #ff6b35;
   cursor: pointer;
-  padding: 0;
-  margin-bottom: 8px;
-  display: inline-block;
+  padding: 8px 4px;
+  font-weight: 600;
+}
+
+.home-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #ff6b35;
+  cursor: pointer;
+  padding: 8px 4px;
+  font-weight: 600;
 }
 
 /* 버튼 */
@@ -490,16 +508,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-
-.home-btn {
-  background: none;
-  border: none;
-  color: #ff6b35;
-  font-size: 13px;
-  cursor: pointer;
-  text-decoration: underline;
-  margin-left: 12px;
 }
 
 /* 사진 그리드 */
