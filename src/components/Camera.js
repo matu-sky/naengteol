@@ -77,8 +77,10 @@ function Camera({ navigate, setIngredients, apiKey }) {
   return (
     <div className="screen">
       <div className="header">
-        <button className="back-btn" onClick={() => navigate('home')}>← 뒤로</button>
-        <button className="home-btn" onClick={() => navigate('home')}>🏠 홈</button>
+        <div className="header-nav">
+          <button className="back-btn" onClick={() => navigate('home')}>← 뒤로</button>
+          <button className="home-btn" onClick={() => navigate('home')}>🏠 홈</button>
+        </div>
         <h2>📷 냉장고 사진</h2>
         <p>여러 장 올리면 더 정확해요! (최대 4장)</p>
       </div>
