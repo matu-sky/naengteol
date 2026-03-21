@@ -50,6 +50,7 @@ function Camera({ navigate, setIngredients, apiKey }) {
     <div className="screen">
       <div className="header">
         <button className="back-btn" onClick={() => navigate('home')}>← 뒤로</button>
+        <button className="home-btn" onClick={() => navigate('home')}>🏠 홈</button>
         <h2>📷 냉장고 사진</h2>
       </div>
 
@@ -66,7 +67,7 @@ function Camera({ navigate, setIngredients, apiKey }) {
           ref={fileInputRef}
           type="file"
           accept="image/*"
-          capture="environment"
+          
           onChange={handleImageUpload}
           style={{ display: 'none' }}
         />

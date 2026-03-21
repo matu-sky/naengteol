@@ -35,6 +35,7 @@ function RecipeDetail({ navigate, recipe }) {
     <div className="screen">
       <div className="header">
         <button className="back-btn" onClick={() => navigate('recipes')}>← 뒤로</button>
+        <button className="home-btn" onClick={() => navigate('home')}>🏠 홈</button>
         <h2>{recipe.name}</h2>
       </div>
 

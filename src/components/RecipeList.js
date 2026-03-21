@@ -10,6 +10,7 @@ function RecipeList({ navigate, recipes, setSelectedRecipe }) {
     <div className="screen">
       <div className="header">
         <button className="back-btn" onClick={() => navigate('ingredients')}>← 뒤로</button>
+        <button className="home-btn" onClick={() => navigate('home')}>🏠 홈</button>
         <h2>🍽️ 추천 레시피</h2>
       </div>
 

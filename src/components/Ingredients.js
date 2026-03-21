@@ -63,6 +63,7 @@ function Ingredients({ navigate, ingredients, setIngredients, setRecipes, apiKey
     <div className="screen">
       <div className="header">
         <button className="back-btn" onClick={() => navigate('camera')}>← 뒤로</button>
+        <button className="home-btn" onClick={() => navigate('home')}>🏠 홈</button>
         <h2>🥕 재료 확인</h2>
       </div>
 
