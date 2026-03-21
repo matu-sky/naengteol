@@ -53,7 +53,6 @@ function Camera({ navigate, setIngredients, apiKey }) {
           }
         }))
       ];
-
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
         {
@@ -87,8 +86,8 @@ function Camera({ navigate, setIngredients, apiKey }) {
       <div className="image-preview-grid">
         {images.map((img, index) => (
           <div key={index} className="image-preview-item">
-            <img src={img} alt={`냉장고${index + 1}`} />
-            <button className="remove-image-btn" onClick={() => removeImage(index)}>✕</button>
+            <img src={img} alt={"냉장고" + (index + 1)} />
+            <button className="remove-image-btn" onClick={() => removeImage(index)}>X</button>
           </div>
         ))}
         {images.length < 4 && (
@@ -107,14 +106,14 @@ function Camera({ navigate, setIngredients, apiKey }) {
           onClick={() => fileInputRef.current.click()}
           disabled={images.length >= 4}
         >
-          🖼️ 파일에서 선택 (여러 장 가능)
+          파일에서 선택 (여러 장 가능)
         </button>
         <button
           className="main-btn secondary"
           onClick={() => cameraInputRef.current.click()}
           disabled={images.length >= 4}
         >
-          📷 카메라로 촬영
+          카메라로 촬영
         </button>
         {images.length > 0 && (
           <button
@@ -122,3 +121,29 @@ function Camera({ navigate, setIngredients, apiKey }) {
             onClick={analyzeImages}
             disabled={loading}
           >
+            {loading ? '재료 분석 중...' : '재료 분석하기 (' + images.length + '장)'}
+          </button>
+        )}
+      </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={handleFileUpload}
+        style={{ display: 'none' }}
+      />
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onChange={handleCameraCapture}
+        style={{ display: 'none' }}
+      />
+    </div>
+  );
+}
+
+export default Camera;
