@@ -34,8 +34,10 @@ function RecipeDetail({ navigate, recipe }) {
   return (
     <div className="screen">
       <div className="header">
-        <button className="back-btn" onClick={() => navigate('recipes')}>← 뒤로</button>
-        <button className="home-btn" onClick={() => navigate('home')}>🏠 홈</button>
+        <div className="header-nav">
+          <button className="back-btn" onClick={() => navigate('recipes')}>← 뒤로</button>
+          <button className="home-btn" onClick={() => navigate('home')}>🏠 홈</button>
+        </div>
         <h2>{recipe.name}</h2>
       </div>
 
@@ -110,7 +112,6 @@ function RecipeDetail({ navigate, recipe }) {
       >
         {saved ? '✅ 저장됨' : '🔖 레시피 저장하기'}
       </button>
-
       <div style={{ height: '20px' }} />
     </div>
   );
