@@ -2,71 +2,28 @@ import React, { useState } from 'react';
 
 function Manual({ navigate, setIngredients, setRecipes, apiKey }) {
   const [name, setName] = useState('');
-  const [expiry, setExpiry] = useState('');
-  const [items, setItems] = useState(() => {
-    return JSON.parse(localStorage.getItem('expiryItems') || '[]');
-  });
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState('전체');
 
   const addItem = () => {
     if (!name.trim()) return;
-    const newItem = { name: name.trim(), expiry };
-    const updated = [...items, newItem];
-    setItems(updated);
-    localStorage.setItem('expiryItems', JSON.stringify(updated));
+    setItems([...items, name.trim()]);
     setName('');
-    setExpiry('');
   };
 
   const removeItem = (index) => {
-    const updated = items.filter((_, i) => i !== index);
-    setItems(updated);
-    localStorage.setItem('expiryItems', JSON.stringify(updated));
-  };
-
-  const getExpiryStatus = (expiry) => {
-    if (!expiry) return 'none';
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const expiryDate = new Date(expiry);
-    const diff = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
-    if (diff < 0) return 'expired';
-    if (diff <= 3) return 'soon';
-    return 'ok';
-  };
-
-  const getExpiryLabel = (expiry) => {
-    if (!expiry) return '';
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const expiryDate = new Date(expiry);
-    const diff = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
-    if (diff < 0) return '⚠️ 만료됨';
-    if (diff === 0) return '⚠️ 오늘 만료';
-    if (diff <= 3) return '⚠️ ' + diff + '일 남음';
-    return '✅ ' + diff + '일 남음';
-  };
-
-  const getSortedItems = () => {
-    return [...items].sort((a, b) => {
-      if (!a.expiry) return 1;
-      if (!b.expiry) return -1;
-      return new Date(a.expiry) - new Date(b.expiry);
-    });
+    setItems(items.filter((_, i) => i !== index));
   };
 
   const getRecipes = async () => {
     if (items.length === 0) return;
     setLoading(true);
-    const sortedItems = getSortedItems();
-    const ingredientList = sortedItems.map(i => i.name);
-    setIngredients(ingredientList);
+    setIngredients(items);
     try {
       const filterText = filter === '전체' ? '' : filter + ' 요리로';
-      const promptText = '재료: ' + ingredientList.join(', ') + '\n' +
+      const promptText = '재료: ' + items.join(', ') + '\n' +
         '이 재료들로 만들 수 있는 ' + filterText + ' 한국 요리 5가지를 추천해줘.\n' +
-        '유통기한이 임박한 재료를 우선 사용하는 레시피를 먼저 추천해줘.\n' +
         '반드시 아래 JSON 형식으로만 답해줘. 다른 말은 하지 마:\n' +
         '[\n' +
         '  {\n' +
@@ -78,6 +35,7 @@ function Manual({ navigate, setIngredients, setRecipes, apiKey }) {
         '    "steps": ["1단계: 재료 용량을 정확히 포함해서 설명", "2단계 설명", "3단계 설명"]\n' +
         '  }\n' +
         ']';
+
       const response = await fetch(
         'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + apiKey,
         {
@@ -110,7 +68,7 @@ function Manual({ navigate, setIngredients, setRecipes, apiKey }) {
           <button className="home-btn" onClick={() => navigate('home')}>🏠 홈</button>
         </div>
         <h2>✏️ 재료 직접 입력</h2>
-        <p>재료와 유통기한을 입력해주세요</p>
+        <p>재료 이름을 입력해주세요</p>
       </div>
 
       <div className="manual-input-box">
@@ -122,15 +80,6 @@ function Manual({ navigate, setIngredients, setRecipes, apiKey }) {
           onKeyPress={(e) => e.key === 'Enter' && addItem()}
           className="manual-name-input"
         />
-        <div className="expiry-row">
-          <label>유통기한</label>
-          <input
-            type="date"
-            value={expiry}
-            onChange={(e) => setExpiry(e.target.value)}
-            className="manual-date-input"
-          />
-        </div>
         <button className="main-btn primary" onClick={addItem}>
           + 재료 추가
         </button>
@@ -139,22 +88,12 @@ function Manual({ navigate, setIngredients, setRecipes, apiKey }) {
       {items.length > 0 && (
         <div className="manual-items">
           <h3>입력된 재료 ({items.length}개)</h3>
-          {getSortedItems().map((item, index) => {
-            const status = getExpiryStatus(item.expiry);
-            return (
-              <div key={index} className={'manual-item ' + status}>
-                <div className="manual-item-info">
-                  <span className="manual-item-name">{item.name}</span>
-                  {item.expiry && (
-                    <span className={'manual-item-expiry ' + status}>
-                      {getExpiryLabel(item.expiry)}
-                    </span>
-                  )}
-                </div>
-                <button className="manual-item-delete" onClick={() => removeItem(index)}>✕</button>
-              </div>
-            );
-          })}
+          {items.map((item, index) => (
+            <div key={index} className="manual-item">
+              <span className="manual-item-name">{item}</span>
+              <button className="manual-item-delete" onClick={() => removeItem(index)}>✕</button>
+            </div>
+          ))}
         </div>
       )}
 
