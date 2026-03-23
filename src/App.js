@@ -7,6 +7,7 @@ import RecipeList from './components/RecipeList';
 import RecipeDetail from './components/RecipeDetail';
 import Saved from './components/Saved';
 import Manual from './components/Manual';
+import Expiry from './components/Expiry';
 
 function App() {
   const [screen, setScreen] = useState('home');
@@ -27,6 +28,8 @@ function App() {
         return <Camera navigate={navigate} setIngredients={setIngredients} apiKey={apiKey} />;
       case 'manual':
         return <Manual navigate={navigate} setIngredients={setIngredients} setRecipes={setRecipes} apiKey={apiKey} />;
+      case 'expiry':
+        return <Expiry navigate={navigate} setIngredients={setIngredients} setRecipes={setRecipes} apiKey={apiKey} />;
       case 'ingredients':
         return <Ingredients navigate={navigate} ingredients={ingredients} setIngredients={setIngredients} setRecipes={setRecipes} apiKey={apiKey} />;
       case 'recipes':
