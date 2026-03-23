@@ -14,7 +14,7 @@ function Home({ navigate, apiKey, setApiKey }) {
   return (
     <div className="screen">
       <div className="header">
-        <h1>🍳 냉털</h1>
+        <h1>🍳 K냉털</h1>
         <p>냉장고를 털어라!</p>
       </div>
 
@@ -36,6 +36,9 @@ function Home({ navigate, apiKey, setApiKey }) {
         <div className="main-buttons">
           <button className="main-btn primary" onClick={() => navigate('camera')}>
             📷 냉장고 사진 찍기
+          </button>
+          <button className="main-btn primary" onClick={() => navigate('manual')}>
+            ✏️ 재료 직접 입력
           </button>
           <button className="main-btn secondary" onClick={() => navigate('saved')}>
             🔖 저장된 레시피 ({savedRecipes.length})
