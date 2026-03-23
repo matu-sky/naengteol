@@ -9,12 +9,14 @@ import Saved from './components/Saved';
 import Manual from './components/Manual';
 import Expiry from './components/Expiry';
 import Shopping from './components/Shopping';
+import WeeklyPlan from './components/WeeklyPlan';
 
 function App() {
   const [screen, setScreen] = useState('home');
   const [ingredients, setIngredients] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [weeklyPlan, setWeeklyPlan] = useState([]);
   const [apiKey, setApiKey] = useState(
     localStorage.getItem('gemini_api_key') || ''
   );
@@ -28,17 +30,19 @@ function App() {
       case 'camera':
         return <Camera navigate={navigate} setIngredients={setIngredients} apiKey={apiKey} />;
       case 'manual':
-        return <Manual navigate={navigate} setIngredients={setIngredients} setRecipes={setRecipes} apiKey={apiKey} />;
+        return <Manual navigate={navigate} setIngredients={setIngredients} setRecipes={setRecipes} setWeeklyPlan={setWeeklyPlan} apiKey={apiKey} />;
       case 'expiry':
         return <Expiry navigate={navigate} setIngredients={setIngredients} setRecipes={setRecipes} apiKey={apiKey} />;
       case 'shopping':
         return <Shopping navigate={navigate} />;
       case 'ingredients':
-        return <Ingredients navigate={navigate} ingredients={ingredients} setIngredients={setIngredients} setRecipes={setRecipes} apiKey={apiKey} />;
+        return <Ingredients navigate={navigate} ingredients={ingredients} setIngredients={setIngredients} setRecipes={setRecipes} setWeeklyPlan={setWeeklyPlan} apiKey={apiKey} />;
       case 'recipes':
         return <RecipeList navigate={navigate} recipes={recipes} setSelectedRecipe={setSelectedRecipe} />;
       case 'recipeDetail':
         return <RecipeDetail navigate={navigate} recipe={selectedRecipe} />;
+      case 'weeklyPlan':
+        return <WeeklyPlan navigate={navigate} weeklyPlan={weeklyPlan} />;
       case 'saved':
         return <Saved navigate={navigate} setSelectedRecipe={setSelectedRecipe} />;
       default:
