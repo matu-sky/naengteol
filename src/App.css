@@ -749,3 +749,63 @@ body {
   background: #f1f8e9;
   color: #388e3c;
 }
+
+/* 장보기 리스트 */
+.shopping-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.shopping-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  background: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.shopping-item.checked {
+  background: #f5f5f5;
+  border-color: #ddd;
+}
+
+.shopping-checkbox {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.shopping-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.shopping-item-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.shopping-item.checked .shopping-item-name {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.shopping-item-quantity {
+  font-size: 12px;
+  color: #888;
+}
+
+.shopping-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
