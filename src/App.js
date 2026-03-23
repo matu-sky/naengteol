@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import './App.css';
-
-// 화면 컴포넌트들
 import Home from './components/Home';
 import Camera from './components/Camera';
 import Ingredients from './components/Ingredients';
 import RecipeList from './components/RecipeList';
 import RecipeDetail from './components/RecipeDetail';
 import Saved from './components/Saved';
+import Manual from './components/Manual';
 
 function App() {
   const [screen, setScreen] = useState('home');
@@ -26,6 +25,8 @@ function App() {
         return <Home navigate={navigate} apiKey={apiKey} setApiKey={setApiKey} />;
       case 'camera':
         return <Camera navigate={navigate} setIngredients={setIngredients} apiKey={apiKey} />;
+      case 'manual':
+        return <Manual navigate={navigate} setIngredients={setIngredients} setRecipes={setRecipes} apiKey={apiKey} />;
       case 'ingredients':
         return <Ingredients navigate={navigate} ingredients={ingredients} setIngredients={setIngredients} setRecipes={setRecipes} apiKey={apiKey} />;
       case 'recipes':
