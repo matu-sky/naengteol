@@ -44,7 +44,7 @@ function App() {
       case 'weeklyPlan':
         return <WeeklyPlan navigate={navigate} weeklyPlan={weeklyPlan} />;
       case 'saved':
-        return <Saved navigate={navigate} setSelectedRecipe={setSelectedRecipe} />;
+        return <Saved navigate={navigate} setSelectedRecipe={setSelectedRecipe} setWeeklyPlan={setWeeklyPlan} />;
       default:
         return <Home navigate={navigate} apiKey={apiKey} setApiKey={setApiKey} />;
     }
