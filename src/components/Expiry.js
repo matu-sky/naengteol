@@ -4,7 +4,34 @@ function Expiry({ navigate, setIngredients, setRecipes, apiKey }) {
   const [items, setItems] = useState(() => {
     return JSON.parse(localStorage.getItem('expiryItems') || '[]');
   });
+  const [name, setName] = useState('');
+  const [expiry, setExpiry] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const addItem = () => {
+    if (!name.trim()) return;
+    const newItem = { name: name.trim(), expiry };
+    const updated = [...items, newItem];
+    setItems(updated);
+    localStorage.setItem('expiryItems', JSON.stringify(updated));
+    setName('');
+    setExpiry('');
+  };
+
+  const removeItem = (index) => {
+    const sorted = getSortedItems();
+    const itemToRemove = sorted[index];
+    const updated = items.filter(i => !(i.name === itemToRemove.name && i.expiry === itemToRemove.expiry));
+    setItems(updated);
+    localStorage.setItem('expiryItems', JSON.stringify(updated));
+  };
+
+  const clearExpired = () => {
+    if (!window.confirm('만료된 재료를 모두 삭제할까요?')) return;
+    const updated = items.filter(i => getExpiryStatus(i.expiry) !== 'expired');
+    setItems(updated);
+    localStorage.setItem('expiryItems', JSON.stringify(updated));
+  };
 
   const getExpiryStatus = (expiry) => {
     if (!expiry) return 'none';
@@ -37,21 +64,6 @@ function Expiry({ navigate, setIngredients, setRecipes, apiKey }) {
     });
   };
 
-  const removeItem = (index) => {
-    const sorted = getSortedItems();
-    const itemToRemove = sorted[index];
-    const updated = items.filter(i => !(i.name === itemToRemove.name && i.expiry === itemToRemove.expiry));
-    setItems(updated);
-    localStorage.setItem('expiryItems', JSON.stringify(updated));
-  };
-
-  const clearExpired = () => {
-    if (!window.confirm('만료된 재료를 모두 삭제할까요?')) return;
-    const updated = items.filter(i => getExpiryStatus(i.expiry) !== 'expired');
-    setItems(updated);
-    localStorage.setItem('expiryItems', JSON.stringify(updated));
-  };
-
   const getRecipesBySoon = async () => {
     const sortedItems = getSortedItems();
     const soonItems = sortedItems.filter(i =>
@@ -60,7 +72,6 @@ function Expiry({ navigate, setIngredients, setRecipes, apiKey }) {
     const ingredientList = soonItems.length > 0
       ? soonItems.map(i => i.name)
       : sortedItems.map(i => i.name);
-
     setIngredients(ingredientList);
     setLoading(true);
 
@@ -119,13 +130,33 @@ function Expiry({ navigate, setIngredients, setRecipes, apiKey }) {
         <p>총 {items.length}개 재료</p>
       </div>
 
+      <div className="manual-input-box">
+        <input
+          type="text"
+          placeholder="재료 이름 (예: 계란)"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && addItem()}
+          className="manual-name-input"
+        />
+        <div className="expiry-row">
+          <label>유통기한</label>
+          <input
+            type="date"
+            value={expiry}
+            onChange={(e) => setExpiry(e.target.value)}
+            className="manual-date-input"
+          />
+        </div>
+        <button className="main-btn primary" onClick={addItem}>
+          + 재료 추가 및 저장
+        </button>
+      </div>
+
       {items.length === 0 ? (
         <div className="empty-state">
           <p>등록된 재료가 없어요</p>
-          <p>재료 직접 입력에서 추가해주세요!</p>
-          <button className="main-btn primary" onClick={() => navigate('manual')} style={{ marginTop: '24px' }}>
-            ✏️ 재료 입력하러 가기
-          </button>
+          <p>위에서 재료를 추가해주세요!</p>
         </div>
       ) : (
         <>
@@ -149,7 +180,7 @@ function Expiry({ navigate, setIngredients, setRecipes, apiKey }) {
           </div>
 
           {expiredCount > 0 && (
-            <button className="main-btn secondary" onClick={clearExpired} style={{ marginBottom: '16px' }}>
+            <button className="main-btn secondary" onClick={clearExpired}>
               🗑️ 만료된 재료 전체 삭제
             </button>
           )}
@@ -159,13 +190,13 @@ function Expiry({ navigate, setIngredients, setRecipes, apiKey }) {
               className="main-btn primary"
               onClick={getRecipesBySoon}
               disabled={loading}
-              style={{ marginBottom: '16px' }}
             >
               {loading ? '🍳 레시피 찾는 중...' : '🍳 임박 재료로 레시피 추천받기'}
             </button>
           )}
 
           <div className="manual-items">
+            <h3>재료 목록</h3>
             {sortedItems.map((item, index) => {
               const status = getExpiryStatus(item.expiry);
               return (
