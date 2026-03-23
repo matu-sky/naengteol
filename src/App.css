@@ -960,3 +960,27 @@ body {
   line-height: 1.5;
   flex: 1;
 }
+
+/* 저장 탭 */
+.saved-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.saved-tab {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid #ff6b35;
+  background: white;
+  color: #ff6b35;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saved-tab.active {
+  background: #ff6b35;
+  color: white;
+}
