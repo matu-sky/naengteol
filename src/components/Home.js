@@ -4,6 +4,19 @@ function Home({ navigate, apiKey, setApiKey }) {
   const [showApiInput, setShowApiInput] = useState(!apiKey);
   const [tempKey, setTempKey] = useState(apiKey);
   const savedRecipes = JSON.parse(localStorage.getItem('savedRecipes') || '[]');
+  const expiryItems = JSON.parse(localStorage.getItem('expiryItems') || '[]');
+  const shoppingItems = JSON.parse(localStorage.getItem('shoppingList') || '[]');
+
+  const soonCount = expiryItems.filter(item => {
+    if (!item.expiry) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const expiryDate = new Date(item.expiry);
+    const diff = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+    return diff <= 3;
+  }).length;
+
+  const uncheckedCount = shoppingItems.filter(i => !i.checked).length;
 
   const saveApiKey = () => {
     localStorage.setItem('gemini_api_key', tempKey);
@@ -39,6 +52,18 @@ function Home({ navigate, apiKey, setApiKey }) {
           </button>
           <button className="main-btn primary" onClick={() => navigate('manual')}>
             ✏️ 재료 직접 입력
+          </button>
+          <button className="main-btn secondary" onClick={() => navigate('expiry')}>
+            ⏰ 유통기한 관리
+            {soonCount > 0 && (
+              <span className="expiry-badge">{soonCount}</span>
+            )}
+          </button>
+          <button className="main-btn secondary" onClick={() => navigate('shopping')}>
+            🛒 장보기 리스트
+            {uncheckedCount > 0 && (
+              <span className="expiry-badge">{uncheckedCount}</span>
+            )}
           </button>
           <button className="main-btn secondary" onClick={() => navigate('saved')}>
             🔖 저장된 레시피 ({savedRecipes.length})
