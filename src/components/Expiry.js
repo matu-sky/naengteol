@@ -4,6 +4,7 @@ function Expiry({ navigate, setIngredients, setRecipes, apiKey }) {
   const [items, setItems] = useState(() => {
     return JSON.parse(localStorage.getItem('expiryItems') || '[]');
   });
+  const [loading, setLoading] = useState(false);
 
   const getExpiryStatus = (expiry) => {
     if (!expiry) return 'none';
@@ -51,14 +52,17 @@ function Expiry({ navigate, setIngredients, setRecipes, apiKey }) {
     localStorage.setItem('expiryItems', JSON.stringify(updated));
   };
 
-  const useForRecipe = async (item) => {
-    const soonItems = getSortedItems().filter(i =>
+  const getRecipesBySoon = async () => {
+    const sortedItems = getSortedItems();
+    const soonItems = sortedItems.filter(i =>
       getExpiryStatus(i.expiry) === 'soon' || getExpiryStatus(i.expiry) === 'expired'
     );
     const ingredientList = soonItems.length > 0
       ? soonItems.map(i => i.name)
-      : [item.name];
+      : sortedItems.map(i => i.name);
+
     setIngredients(ingredientList);
+    setLoading(true);
 
     const promptText = '재료: ' + ingredientList.join(', ') + '\n' +
       '이 재료들로 만들 수 있는 한국 요리 5가지를 추천해줘.\n' +
@@ -97,6 +101,7 @@ function Expiry({ navigate, setIngredients, setRecipes, apiKey }) {
     } catch (err) {
       alert('레시피 추천에 실패했어요. 다시 시도해주세요.');
     }
+    setLoading(false);
   };
 
   const sortedItems = getSortedItems();
@@ -149,9 +154,14 @@ function Expiry({ navigate, setIngredients, setRecipes, apiKey }) {
             </button>
           )}
 
-          {soonCount > 0 && (
-            <button className="main-btn primary" onClick={() => useForRecipe(sortedItems[0])} style={{ marginBottom: '16px' }}>
-              🍳 임박 재료로 레시피 추천받기
+          {(soonCount > 0 || expiredCount > 0) && (
+            <button
+              className="main-btn primary"
+              onClick={getRecipesBySoon}
+              disabled={loading}
+              style={{ marginBottom: '16px' }}
+            >
+              {loading ? '🍳 레시피 찾는 중...' : '🍳 임박 재료로 레시피 추천받기'}
             </button>
           )}
 
@@ -166,12 +176,7 @@ function Expiry({ navigate, setIngredients, setRecipes, apiKey }) {
                       {getExpiryLabel(item.expiry)}
                     </span>
                   </div>
-                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <button
-                      className="manual-item-delete"
-                      onClick={() => removeItem(index)}
-                    >✕</button>
-                  </div>
+                  <button className="manual-item-delete" onClick={() => removeItem(index)}>✕</button>
                 </div>
               );
             })}
