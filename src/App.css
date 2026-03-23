@@ -695,3 +695,57 @@ body {
   cursor: pointer;
   padding: 4px;
 }
+
+/* 유통기한 배지 */
+.expiry-badge {
+  display: inline-block;
+  background: #e53935;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* 유통기한 요약 */
+.expiry-summary {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.expiry-summary-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  border-radius: 12px;
+  font-size: 13px;
+  gap: 4px;
+}
+
+.expiry-summary-item span:last-child {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.expiry-summary-item.expired {
+  background: #ffebee;
+  color: #e53935;
+}
+
+.expiry-summary-item.soon {
+  background: #fff8e1;
+  color: #f57c00;
+}
+
+.expiry-summary-item.ok {
+  background: #f1f8e9;
+  color: #388e3c;
+}
