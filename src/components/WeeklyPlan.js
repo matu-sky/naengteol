@@ -5,9 +5,15 @@ function WeeklyPlan({ navigate, weeklyPlan }) {
   const [expandedMeal, setExpandedMeal] = useState(null);
 
   const saveWeeklyPlan = () => {
-    localStorage.setItem('weeklyPlan', JSON.stringify(weeklyPlan));
-    alert('일주일 식단이 저장됐어요! 🎉');
+  const savedPlans = JSON.parse(localStorage.getItem('savedWeeklyPlans') || '[]');
+  const newPlan = {
+    plan: weeklyPlan,
+    savedAt: new Date().toLocaleDateString('ko-KR')
   };
+  savedPlans.push(newPlan);
+  localStorage.setItem('savedWeeklyPlans', JSON.stringify(savedPlans));
+  alert('일주일 식단이 저장됐어요! 🎉');
+};
 
   const copyToClipboard = () => {
     const text = '📅 일주일 식단\n\n' +
