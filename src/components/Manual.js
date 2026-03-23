@@ -3,24 +3,32 @@ import React, { useState } from 'react';
 function Manual({ navigate, setIngredients, setRecipes, apiKey }) {
   const [name, setName] = useState('');
   const [expiry, setExpiry] = useState('');
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(() => {
+    return JSON.parse(localStorage.getItem('expiryItems') || '[]');
+  });
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState('전체');
 
   const addItem = () => {
     if (!name.trim()) return;
-    setItems([...items, { name: name.trim(), expiry }]);
+    const newItem = { name: name.trim(), expiry };
+    const updated = [...items, newItem];
+    setItems(updated);
+    localStorage.setItem('expiryItems', JSON.stringify(updated));
     setName('');
     setExpiry('');
   };
 
   const removeItem = (index) => {
-    setItems(items.filter((_, i) => i !== index));
+    const updated = items.filter((_, i) => i !== index);
+    setItems(updated);
+    localStorage.setItem('expiryItems', JSON.stringify(updated));
   };
 
   const getExpiryStatus = (expiry) => {
     if (!expiry) return 'none';
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const expiryDate = new Date(expiry);
     const diff = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
     if (diff < 0) return 'expired';
@@ -31,6 +39,7 @@ function Manual({ navigate, setIngredients, setRecipes, apiKey }) {
   const getExpiryLabel = (expiry) => {
     if (!expiry) return '';
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const expiryDate = new Date(expiry);
     const diff = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
     if (diff < 0) return '⚠️ 만료됨';
@@ -50,11 +59,9 @@ function Manual({ navigate, setIngredients, setRecipes, apiKey }) {
   const getRecipes = async () => {
     if (items.length === 0) return;
     setLoading(true);
-
     const sortedItems = getSortedItems();
     const ingredientList = sortedItems.map(i => i.name);
     setIngredients(ingredientList);
-
     try {
       const filterText = filter === '전체' ? '' : filter + ' 요리로';
       const promptText = '재료: ' + ingredientList.join(', ') + '\n' +
@@ -71,7 +78,6 @@ function Manual({ navigate, setIngredients, setRecipes, apiKey }) {
         '    "steps": ["1단계: 재료 용량을 정확히 포함해서 설명", "2단계 설명", "3단계 설명"]\n' +
         '  }\n' +
         ']';
-
       const response = await fetch(
         'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + apiKey,
         {
