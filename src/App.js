@@ -8,6 +8,7 @@ import RecipeDetail from './components/RecipeDetail';
 import Saved from './components/Saved';
 import Manual from './components/Manual';
 import Expiry from './components/Expiry';
+import Shopping from './components/Shopping';
 
 function App() {
   const [screen, setScreen] = useState('home');
@@ -30,6 +31,8 @@ function App() {
         return <Manual navigate={navigate} setIngredients={setIngredients} setRecipes={setRecipes} apiKey={apiKey} />;
       case 'expiry':
         return <Expiry navigate={navigate} setIngredients={setIngredients} setRecipes={setRecipes} apiKey={apiKey} />;
+      case 'shopping':
+        return <Shopping navigate={navigate} />;
       case 'ingredients':
         return <Ingredients navigate={navigate} ingredients={ingredients} setIngredients={setIngredients} setRecipes={setRecipes} apiKey={apiKey} />;
       case 'recipes':
