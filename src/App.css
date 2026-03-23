@@ -809,3 +809,154 @@ body {
   gap: 8px;
   margin-bottom: 16px;
 }
+
+/* 일주일 식단 */
+.weekly-plan {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.weekly-day-card {
+  border: 1px solid #eee;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.weekly-day-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: white;
+  cursor: pointer;
+}
+
+.weekly-day-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ff6b35;
+  min-width: 60px;
+}
+
+.weekly-day-meals-preview {
+  display: flex;
+  flex: 1;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.weekly-meal-chip {
+  background: #fff3ee;
+  color: #ff6b35;
+  border-radius: 12px;
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.weekly-expand-btn {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.weekly-day-detail {
+  background: #fafafa;
+  padding: 12px 16px;
+  border-top: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.weekly-meal-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  overflow: hidden;
+}
+
+.weekly-meal-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+}
+
+.weekly-meal-number {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ff6b35;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.weekly-meal-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.weekly-meal-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.weekly-meal-meta {
+  font-size: 12px;
+  color: #888;
+}
+
+.weekly-meal-detail {
+  padding: 12px 14px;
+  border-top: 1px solid #eee;
+  background: #fff9f7;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.weekly-meal-section h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.weekly-step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.weekly-step-number {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ff6b35;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.weekly-step-text {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.5;
+  flex: 1;
+}
