@@ -189,12 +189,11 @@ function Shopping({ navigate }) {
                   )}
                 </div>
                 <button
-                  className="coupang-btn"
-                  onClick={(e) => { e.stopPropagation(); openCoupang(item.name); }}
-                  title="쿠팡에서 검색"
-                >
-                  🛍️
-                </button>
+  className="coupang-btn"
+  onClick={(e) => { e.stopPropagation(); openCoupang(item.name); }}
+>
+  🛍️ 구매
+</button>
                 <button
                   className="manual-item-delete"
                   onClick={(e) => { e.stopPropagation(); removeItem(index); }}
