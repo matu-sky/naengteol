@@ -7,6 +7,8 @@ function Shopping({ navigate }) {
   const [name, setName] = useState('');
   const [quantity, setQuantity] = useState('');
 
+  const COUPANG_ID = 'AF9636369';
+
   const addItem = () => {
     if (!name.trim()) return;
     const newItem = {
@@ -69,6 +71,16 @@ function Shopping({ navigate }) {
         (item.quantity ? ' (' + item.quantity + ')' : '')
       ).join('\n');
     window.location.href = 'sms:?body=' + encodeURIComponent(text);
+  };
+
+  const openCoupang = (itemName) => {
+    const url = `https://www.coupang.com/np/search?q=${encodeURIComponent(itemName)}&channel=user&isPriceRange=false&filterType=&listSize=36&filter=&isPriceRange=false&minPrice=&maxPrice=&page=1&rocketAll=false&searchIndexingToken=&sorter=scoreDesc&ref=${COUPANG_ID}`;
+    window.open(url, '_blank');
+  };
+
+  const openCoupangMain = () => {
+    const url = `https://www.coupang.com?ref=${COUPANG_ID}`;
+    window.open(url, '_blank');
   };
 
   const downloadPDF = async () => {
@@ -177,6 +189,13 @@ function Shopping({ navigate }) {
                   )}
                 </div>
                 <button
+                  className="coupang-btn"
+                  onClick={(e) => { e.stopPropagation(); openCoupang(item.name); }}
+                  title="쿠팡에서 검색"
+                >
+                  🛍️
+                </button>
+                <button
                   className="manual-item-delete"
                   onClick={(e) => { e.stopPropagation(); removeItem(index); }}
                 >✕</button>
@@ -209,6 +228,22 @@ function Shopping({ navigate }) {
               📄 PDF 저장
             </button>
           </div>
+
+          <div style={{ marginTop: '16px', padding: '16px', background: '#fff8f5', borderRadius: '12px', border: '1px solid #ffd6c0' }}>
+            <p style={{ fontSize: '13px', color: '#ff6b35', fontWeight: '600', marginBottom: '8px' }}>
+              🛒 쿠팡에서 장보기
+            </p>
+            <p style={{ fontSize: '12px', color: '#999', marginBottom: '12px' }}>
+              재료 옆 🛍️ 버튼으로 개별 검색하거나, 아래 버튼으로 쿠팡 바로가기
+            </p>
+            <button
+              className="main-btn primary"
+              onClick={openCoupangMain}
+              style={{ background: '#ff6b35' }}
+            >
+              🛒 쿠팡에서 한번에 장보기
+            </button>
+          </div>
         </>
       )}
 
@@ -223,3 +258,12 @@ function Shopping({ navigate }) {
 }
 
 export default Shopping;
+```
+
+---
+
+## 추가된 기능
+```
+✅ 재료 옆 🛍️ 버튼 → 쿠팡에서 재료 검색
+✅ 하단 🛒 쿠팡 바로가기 버튼
+✅ 파트너스 ID AF9636369 자동 적용
