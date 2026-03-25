@@ -17,16 +17,16 @@ function App() {
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [weeklyPlan, setWeeklyPlan] = useState([]);
-  const [apiKey, setApiKey] = useState(
-    localStorage.getItem('gemini_api_key') || ''
-  );
+
+  // ✅ 환경변수에서 API 키 가져오기 (localStorage 제거)
+  const apiKey = process.env.REACT_APP_GEMINI_KEY;
 
   const navigate = (screenName) => setScreen(screenName);
 
   const renderScreen = () => {
     switch (screen) {
       case 'home':
-        return <Home navigate={navigate} apiKey={apiKey} setApiKey={setApiKey} />;
+        return <Home navigate={navigate} />;
       case 'camera':
         return <Camera navigate={navigate} setIngredients={setIngredients} apiKey={apiKey} />;
       case 'manual':
@@ -46,7 +46,7 @@ function App() {
       case 'saved':
         return <Saved navigate={navigate} setSelectedRecipe={setSelectedRecipe} setWeeklyPlan={setWeeklyPlan} />;
       default:
-        return <Home navigate={navigate} apiKey={apiKey} setApiKey={setApiKey} />;
+        return <Home navigate={navigate} />;
     }
   };
 
