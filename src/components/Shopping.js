@@ -51,7 +51,7 @@ function Shopping({ navigate }) {
   const copyToClipboard = () => {
     if (items.length === 0) return;
     const text = '🛒 장보기 리스트\n\n' +
-      items.map((item, i) =>
+      items.map((item) =>
         (item.checked ? '✅ ' : '⬜ ') +
         item.name +
         (item.quantity ? ' (' + item.quantity + ')' : '')
@@ -71,40 +71,56 @@ function Shopping({ navigate }) {
     window.location.href = 'sms:?body=' + encodeURIComponent(text);
   };
 
-  const downloadPDF = () => {
+  const downloadPDF = async () => {
     if (items.length === 0) return;
-    const printContent = `
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <title>장보기 리스트</title>
-          <style>
-            body { font-family: Arial, sans-serif; padding: 40px; }
-            h1 { color: #ff6b35; font-size: 24px; margin-bottom: 20px; }
-            .item { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 16px; }
-            .checkbox { width: 20px; height: 20px; border: 2px solid #ff6b35; border-radius: 4px; margin-right: 12px; display: inline-block; }
-            .checked { background: #ff6b35; }
-            .quantity { color: #888; margin-left: 8px; font-size: 14px; }
-            .date { color: #888; font-size: 12px; margin-top: 20px; }
-          </style>
-        </head>
-        <body>
-          <h1>🛒 장보기 리스트</h1>
-          ${items.map(item => `
-            <div class="item">
-              <span class="checkbox ${item.checked ? 'checked' : ''}"></span>
-              <span>${item.name}</span>
-              ${item.quantity ? '<span class="quantity">(' + item.quantity + ')</span>' : ''}
-            </div>
-          `).join('')}
-          <p class="date">작성일: ${new Date().toLocaleDateString('ko-KR')}</p>
-        </body>
-      </html>
+
+    const html2pdf = (await import('html2pdf.js')).default;
+
+    const content = document.createElement('div');
+    content.innerHTML = `
+      <div style="font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; padding: 40px;">
+        <h1 style="color: #ff6b35; font-size: 24px; margin-bottom: 4px;">🛒 장보기 리스트</h1>
+        <p style="color: #999; font-size: 12px; margin-bottom: 24px;">
+          ${new Date().toLocaleDateString('ko-KR')} 작성 · 총 ${items.length}개
+        </p>
+        <hr style="border: 1px solid #ff6b35; margin-bottom: 24px;" />
+        ${items.map(item => `
+          <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee;">
+            <span style="
+              display: inline-block;
+              width: 18px; height: 18px;
+              border: 2px solid #ff6b35;
+              border-radius: 4px;
+              margin-right: 12px;
+              background: ${item.checked ? '#ff6b35' : 'white'};
+              flex-shrink: 0;
+            "></span>
+            <span style="
+              font-size: 15px;
+              color: ${item.checked ? '#aaa' : '#333'};
+              text-decoration: ${item.checked ? 'line-through' : 'none'};
+            ">${item.name}</span>
+            ${item.quantity ? `
+              <span style="color: #999; font-size: 13px; margin-left: 8px;">
+                (${item.quantity})
+              </span>` : ''}
+          </div>
+        `).join('')}
+        <p style="color: #ccc; font-size: 11px; margin-top: 32px; text-align: right;">
+          Made by K냉털 🍳
+        </p>
+      </div>
     `;
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(printContent);
-    printWindow.document.close();
-    printWindow.print();
+
+    const options = {
+      margin: 0,
+      filename: '장보기리스트.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(options).from(content).save();
   };
 
   const checkedCount = items.filter(i => i.checked).length;
@@ -190,7 +206,7 @@ function Shopping({ navigate }) {
               💬 문자로 공유
             </button>
             <button className="main-btn secondary" onClick={downloadPDF}>
-              🖨️ 인쇄 / PDF 저장
+              📄 PDF 저장
             </button>
           </div>
         </>
@@ -207,3 +223,4 @@ function Shopping({ navigate }) {
 }
 
 export default Shopping;
+```
