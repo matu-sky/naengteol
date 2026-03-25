@@ -223,4 +223,3 @@ function Shopping({ navigate }) {
 }
 
 export default Shopping;
-```
