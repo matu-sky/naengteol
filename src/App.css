@@ -984,3 +984,12 @@ body {
   background: #ff6b35;
   color: white;
 }
+
+.coupang-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  margin-right: 4px;
+}
