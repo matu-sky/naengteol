@@ -258,12 +258,3 @@ function Shopping({ navigate }) {
 }
 
 export default Shopping;
-```
-
----
-
-## 추가된 기능
-```
-✅ 재료 옆 🛍️ 버튼 → 쿠팡에서 재료 검색
-✅ 하단 🛒 쿠팡 바로가기 버튼
-✅ 파트너스 ID AF9636369 자동 적용
