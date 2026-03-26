@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function Home({ navigate }) {
   const savedRecipes = JSON.parse(localStorage.getItem('savedRecipes') || '[]');
@@ -16,12 +16,19 @@ function Home({ navigate }) {
 
   const uncheckedCount = shoppingItems.filter(i => !i.checked).length;
 
+  useEffect(() => {
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {}
+  }, []);
+
   return (
     <div className="screen">
       <div className="header">
         <h1>🍳 K냉털</h1>
         <p>냉장고를 털어라!</p>
       </div>
+
       <div className="main-buttons">
         <button className="main-btn primary" onClick={() => navigate('camera')}>
           📷 냉장고 사진 찍기
@@ -44,6 +51,17 @@ function Home({ navigate }) {
         <button className="main-btn secondary" onClick={() => navigate('saved')}>
           🔖 저장된 레시피 ({savedRecipes.length})
         </button>
+      </div>
+
+      <div style={{ marginTop: '24px' }}>
+        <ins
+          className="adsbygoogle"
+          style={{ display: 'block' }}
+          data-ad-client="ca-app-pub-7614582639026490"
+          data-ad-slot="4031144963"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
       </div>
     </div>
   );
