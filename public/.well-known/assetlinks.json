@@ -1,1 +1,10 @@
-
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.naengteol.app",
+    "sha256_cert_fingerprints": [
+      "21:D7:E2:F4:9F:C3:91:A5:4F:B1:BE:FA:0B:51:EE:FD:67:F2:85:34:5F:EE:16:68:68:2E:25:F5:56:30:D8:2F"
+    ]
+  }
+}]
