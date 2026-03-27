@@ -74,65 +74,53 @@ function Shopping({ navigate }) {
   };
 
   const openCoupang = (itemName) => {
-    const url = `https://www.coupang.com/np/search?q=${encodeURIComponent(itemName)}&channel=user&isPriceRange=false&filterType=&listSize=36&filter=&isPriceRange=false&minPrice=&maxPrice=&page=1&rocketAll=false&searchIndexingToken=&sorter=scoreDesc&ref=${COUPANG_ID}`;
+    const url = 'https://www.coupang.com/np/search?q=' + encodeURIComponent(itemName) + '&channel=user&isPriceRange=false&filterType=&listSize=36&filter=&minPrice=&maxPrice=&page=1&rocketAll=false&searchIndexingToken=&sorter=scoreDesc&ref=' + COUPANG_ID;
     window.open(url, '_blank');
   };
 
   const openCoupangMain = () => {
-    const url = `https://www.coupang.com?ref=${COUPANG_ID}`;
-    window.open(url, '_blank');
+    window.open('https://link.coupang.com/a/ecMMwj', '_blank');
   };
 
-  const downloadPDF = async () => {
+  const downloadPDF = () => {
     if (items.length === 0) return;
-
-    const html2pdf = (await import('html2pdf.js')).default;
-
-    const content = document.createElement('div');
-    content.innerHTML = `
-      <div style="font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; padding: 40px;">
-        <h1 style="color: #ff6b35; font-size: 24px; margin-bottom: 4px;">🛒 장보기 리스트</h1>
-        <p style="color: #999; font-size: 12px; margin-bottom: 24px;">
-          ${new Date().toLocaleDateString('ko-KR')} 작성 · 총 ${items.length}개
-        </p>
-        <hr style="border: 1px solid #ff6b35; margin-bottom: 24px;" />
-        ${items.map(item => `
-          <div style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee;">
-            <span style="
-              display: inline-block;
-              width: 18px; height: 18px;
-              border: 2px solid #ff6b35;
-              border-radius: 4px;
-              margin-right: 12px;
-              background: ${item.checked ? '#ff6b35' : 'white'};
-              flex-shrink: 0;
-            "></span>
-            <span style="
-              font-size: 15px;
-              color: ${item.checked ? '#aaa' : '#333'};
-              text-decoration: ${item.checked ? 'line-through' : 'none'};
-            ">${item.name}</span>
-            ${item.quantity ? `
-              <span style="color: #999; font-size: 13px; margin-left: 8px;">
-                (${item.quantity})
-              </span>` : ''}
-          </div>
-        `).join('')}
-        <p style="color: #ccc; font-size: 11px; margin-top: 32px; text-align: right;">
-          Made by K냉털 🍳
-        </p>
-      </div>
+    const printContent = `
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <title>장보기 리스트</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 40px; }
+            h1 { color: #ff6b35; font-size: 24px; margin-bottom: 4px; }
+            p { color: #999; font-size: 12px; margin-bottom: 24px; }
+            hr { border: 1px solid #ff6b35; margin-bottom: 24px; }
+            .item { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+            .checkbox { width: 18px; height: 18px; border: 2px solid #ff6b35; border-radius: 4px; margin-right: 12px; display: inline-block; }
+            .checked-box { background: #ff6b35; }
+            .item-name { font-size: 15px; color: #333; }
+            .item-qty { font-size: 13px; color: #999; margin-left: 8px; }
+            .footer { color: #ccc; font-size: 11px; margin-top: 32px; text-align: right; }
+          </style>
+        </head>
+        <body>
+          <h1>🛒 장보기 리스트</h1>
+          <p>${new Date().toLocaleDateString('ko-KR')} 작성 · 총 ${items.length}개</p>
+          <hr />
+          ${items.map(item => `
+            <div class="item">
+              <span class="checkbox ${item.checked ? 'checked-box' : ''}"></span>
+              <span class="item-name" style="${item.checked ? 'text-decoration:line-through;color:#aaa;' : ''}">${item.name}</span>
+              ${item.quantity ? '<span class="item-qty">(' + item.quantity + ')</span>' : ''}
+            </div>
+          `).join('')}
+          <p class="footer">Made by K냉털 🍳</p>
+        </body>
+      </html>
     `;
-
-    const options = {
-      margin: 0,
-      filename: '장보기리스트.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    html2pdf().set(options).from(content).save();
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.print();
   };
 
   const checkedCount = items.filter(i => i.checked).length;
@@ -189,11 +177,11 @@ function Shopping({ navigate }) {
                   )}
                 </div>
                 <button
-  className="coupang-btn"
-  onClick={(e) => { e.stopPropagation(); openCoupang(item.name); }}
->
-  🛍️ 구매
-</button>
+                  className="coupang-btn"
+                  onClick={(e) => { e.stopPropagation(); openCoupang(item.name); }}
+                >
+                  🛍️ 구매
+                </button>
                 <button
                   className="manual-item-delete"
                   onClick={(e) => { e.stopPropagation(); removeItem(index); }}
