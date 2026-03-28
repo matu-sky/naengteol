@@ -230,6 +230,9 @@ function Shopping({ navigate }) {
             >
               🛒 쿠팡에서 한번에 장보기
             </button>
+            <p style={{ fontSize: '11px', color: '#aaa', marginTop: '8px', textAlign: 'center' }}>
+              이 게시물은 쿠팡파트너스 활동의 일환으로 수수료를 제공받습니다.
+            </p>
           </div>
         </>
       )}
