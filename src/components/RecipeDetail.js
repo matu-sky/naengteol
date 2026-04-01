@@ -21,7 +21,21 @@ function RecipeDetail({ navigate, recipe }) {
   };
 
   const speak = (text) => {
-    const utterance = new SpeechSynthesisUtterance(text);
+    // 소수점 숫자를 자연스러운 한국어로 변환
+    const convertNumbersForTTS = (str) => {
+      const numToKorean = {
+        '0': '영', '1': '일', '2': '이', '3': '삼', '4': '사',
+        '5': '오', '6': '육', '7': '칠', '8': '팔', '9': '구'
+      };
+      // 소수점 포함 숫자 변환 (예: 1.5 → 일점오, 0.5 → 영점오)
+      return str.replace(/(\d+)\.(\d+)/g, (match, integer, decimal) => {
+        const intKor = integer.split('').map(d => numToKorean[d]).join('');
+        const decKor = decimal.split('').map(d => numToKorean[d]).join('');
+        return intKor + '점' + decKor;
+      });
+    };
+    const converted = convertNumbersForTTS(text);
+    const utterance = new SpeechSynthesisUtterance(converted);
     utterance.lang = 'ko-KR';
     window.speechSynthesis.speak(utterance);
   };
