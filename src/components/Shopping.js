@@ -156,6 +156,9 @@ function Shopping({ navigate }) {
         <button className="main-btn primary" onClick={addItem}>
           + 추가
         </button>
+        <p style={{ fontSize: '11px', color: '#aaa', marginTop: '6px', textAlign: 'center' }}>
+          이 게시물은 쿠팡파트너스 활동의 일환으로 수수료를 제공받습니다.
+        </p>
       </div>
 
       {items.length > 0 && (
