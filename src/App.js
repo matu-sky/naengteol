@@ -18,6 +18,7 @@ function App() {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [weeklyPlan, setWeeklyPlan] = useState([]);
   const [previousScreen, setPreviousScreen] = useState('recipes');
+  const [previousWeeklyScreen, setPreviousWeeklyScreen] = useState('ingredients');
 
   // ✅ 환경변수에서 API 키 가져오기 (localStorage 제거)
   const apiKey = process.env.REACT_APP_GEMINI_KEY;
@@ -43,9 +44,9 @@ function App() {
       case 'recipeDetail':
         return <RecipeDetail navigate={navigate} recipe={selectedRecipe} previousScreen={previousScreen} />;
       case 'weeklyPlan':
-        return <WeeklyPlan navigate={navigate} weeklyPlan={weeklyPlan} />;
+        return <WeeklyPlan navigate={navigate} weeklyPlan={weeklyPlan} previousScreen={previousWeeklyScreen} />;
       case 'saved':
-        return <Saved navigate={navigate} setSelectedRecipe={setSelectedRecipe} setWeeklyPlan={setWeeklyPlan} setPreviousScreen={setPreviousScreen} />;
+        return <Saved navigate={navigate} setSelectedRecipe={setSelectedRecipe} setWeeklyPlan={setWeeklyPlan} setPreviousScreen={setPreviousScreen} setPreviousWeeklyScreen={setPreviousWeeklyScreen} />;
       default:
         return <Home navigate={navigate} />;
     }
