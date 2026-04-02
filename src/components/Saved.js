@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Saved({ navigate, setSelectedRecipe, setWeeklyPlan }) {
+function Saved({ navigate, setSelectedRecipe, setWeeklyPlan, setPreviousScreen }) {
   const [activeTab, setActiveTab] = useState('recipes');
   const [savedRecipes, setSavedRecipes] = useState(
     JSON.parse(localStorage.getItem('savedRecipes') || '[]')
@@ -25,6 +25,7 @@ function Saved({ navigate, setSelectedRecipe, setWeeklyPlan }) {
 
   const viewRecipe = (recipe) => {
     setSelectedRecipe(recipe);
+    setPreviousScreen('saved');
     navigate('recipeDetail');
   };
 
