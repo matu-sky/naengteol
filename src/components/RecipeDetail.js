@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function RecipeDetail({ navigate, recipe }) {
+function RecipeDetail({ navigate, recipe, previousScreen }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [saved, setSaved] = useState(false);
   const [memo, setMemo] = useState('');
@@ -49,7 +49,7 @@ function RecipeDetail({ navigate, recipe }) {
     <div className="screen">
       <div className="header">
         <div className="header-nav">
-          <button className="back-btn" onClick={() => navigate('recipes')}>← 뒤로</button>
+          <button className="back-btn" onClick={() => navigate(previousScreen || 'recipes')}>← 뒤로</button>
           <button className="home-btn" onClick={() => navigate('home')}>🏠 홈</button>
         </div>
         <h2>{recipe.name}</h2>
