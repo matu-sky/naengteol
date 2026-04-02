@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 
-function WeeklyPlan({ navigate, weeklyPlan }) {
+function WeeklyPlan({ navigate, weeklyPlan, previousScreen }) {
   const [expandedDay, setExpandedDay] = useState(null);
   const [expandedMeal, setExpandedMeal] = useState(null);
 
   const saveWeeklyPlan = () => {
-  const savedPlans = JSON.parse(localStorage.getItem('savedWeeklyPlans') || '[]');
-  const newPlan = {
-    plan: weeklyPlan,
-    savedAt: new Date().toLocaleDateString('ko-KR')
+    const savedPlans = JSON.parse(localStorage.getItem('savedWeeklyPlans') || '[]');
+    const newPlan = {
+      plan: weeklyPlan,
+      savedAt: new Date().toLocaleDateString('ko-KR')
+    };
+    savedPlans.push(newPlan);
+    localStorage.setItem('savedWeeklyPlans', JSON.stringify(savedPlans));
+    alert('일주일 식단이 저장됐어요! 🎉');
   };
-  savedPlans.push(newPlan);
-  localStorage.setItem('savedWeeklyPlans', JSON.stringify(savedPlans));
-  alert('일주일 식단이 저장됐어요! 🎉');
-};
 
   const copyToClipboard = () => {
     const text = '📅 일주일 식단\n\n' +
@@ -86,7 +86,7 @@ function WeeklyPlan({ navigate, weeklyPlan }) {
     <div className="screen">
       <div className="header">
         <div className="header-nav">
-          <button className="back-btn" onClick={() => navigate('ingredients')}>← 뒤로</button>
+          <button className="back-btn" onClick={() => navigate(previousScreen || 'ingredients')}>← 뒤로</button>
           <button className="home-btn" onClick={() => navigate('home')}>🏠 홈</button>
         </div>
         <h2>📅 일주일 식단</h2>
