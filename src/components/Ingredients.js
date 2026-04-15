@@ -6,15 +6,14 @@ function Ingredients({ navigate, ingredients, setIngredients, setRecipes, setWee
   const [filter, setFilter] = useState('전체');
   const [loadingMessage, setLoadingMessage] = useState('');
 
-  const loadingMessages = [
-    '🍳 AI가 레시피를 찾고 있어요...',
-    '📖 맛있는 레시피를 작성 중이에요...',
-    '🥘 재료 조합을 분석하고 있어요...',
-    '👨‍🍳 요리 순서를 정리하고 있어요...',
-    '✨ 거의 다 됐어요!'
-  ];
-
   useEffect(() => {
+    const loadingMessages = [
+      '🍳 AI가 레시피를 찾고 있어요...',
+      '📖 맛있는 레시피를 작성 중이에요...',
+      '🥘 재료 조합을 분석하고 있어요...',
+      '👨‍🍳 요리 순서를 정리하고 있어요...',
+      '✨ 거의 다 됐어요!'
+    ];
     if (!loading) return;
     let index = 0;
     setLoadingMessage(loadingMessages[0]);
