@@ -2,10 +2,14 @@ import React, { useState, useRef } from 'react';
 
 function Camera({ navigate, setIngredients, apiKey }) {
   const [images, setImages] = useState([]);
+  const [cameraCount, setCameraCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
+
+  const maxTotal = 4;
+  const maxCamera = 2;
 
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
@@ -14,7 +18,7 @@ function Camera({ navigate, setIngredients, apiKey }) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImages(prev => {
-          if (prev.length >= 4) return prev;
+          if (prev.length >= maxTotal) return prev;
           return [...prev, reader.result];
         });
       };
@@ -28,9 +32,10 @@ function Camera({ navigate, setIngredients, apiKey }) {
     const reader = new FileReader();
     reader.onloadend = () => {
       setImages(prev => {
-        if (prev.length >= 4) return prev;
+        if (prev.length >= maxTotal) return prev;
         return [...prev, reader.result];
       });
+      setCameraCount(prev => prev + 1);
     };
     reader.readAsDataURL(file);
   };
@@ -92,7 +97,7 @@ function Camera({ navigate, setIngredients, apiKey }) {
             <button className="remove-image-btn" onClick={() => removeImage(index)}>X</button>
           </div>
         ))}
-        {images.length < 4 && (
+        {images.length < maxTotal && (
           <div className="image-add-placeholder">
             <span>+</span>
             <p>{images.length === 0 ? '사진을 추가해주세요' : '사진 추가'}</p>
@@ -106,16 +111,18 @@ function Camera({ navigate, setIngredients, apiKey }) {
         <button
           className="main-btn secondary"
           onClick={() => fileInputRef.current.click()}
-          disabled={images.length >= 4}
+          disabled={images.length >= maxTotal}
         >
-          파일에서 선택 (여러 장 가능)
+          📁 파일에서 선택 (최대 4장)
         </button>
         <button
           className="main-btn secondary"
           onClick={() => cameraInputRef.current.click()}
-          disabled={images.length >= 4}
+          disabled={images.length >= maxTotal || cameraCount >= maxCamera}
         >
-          카메라로 촬영
+          {cameraCount >= maxCamera
+            ? '📷 촬영 완료 (최대 2장)'
+            : '📷 카메라로 촬영 (' + cameraCount + '/' + maxCamera + ')'}
         </button>
         {images.length > 0 && (
           <button
@@ -123,7 +130,7 @@ function Camera({ navigate, setIngredients, apiKey }) {
             onClick={analyzeImages}
             disabled={loading}
           >
-            {loading ? '재료 분석 중...' : '재료 분석하기 (' + images.length + '장)'}
+            {loading ? '재료 분석 중...' : '🔍 재료 분석하기 (' + images.length + '장)'}
           </button>
         )}
       </div>
