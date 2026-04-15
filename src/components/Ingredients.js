@@ -1,9 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Ingredients({ navigate, ingredients, setIngredients, setRecipes, setWeeklyPlan, apiKey }) {
   const [loading, setLoading] = useState(false);
   const [newIngredient, setNewIngredient] = useState('');
   const [filter, setFilter] = useState('전체');
+  const [loadingMessage, setLoadingMessage] = useState('');
+
+  const loadingMessages = [
+    '🍳 AI가 레시피를 찾고 있어요...',
+    '📖 맛있는 레시피를 작성 중이에요...',
+    '🥘 재료 조합을 분석하고 있어요...',
+    '👨‍🍳 요리 순서를 정리하고 있어요...',
+    '✨ 거의 다 됐어요!'
+  ];
+
+  useEffect(() => {
+    if (!loading) return;
+    let index = 0;
+    setLoadingMessage(loadingMessages[0]);
+    const interval = setInterval(() => {
+      index = (index + 1) % loadingMessages.length;
+      setLoadingMessage(loadingMessages[index]);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [loading]);
 
   const addIngredient = () => {
     if (!newIngredient.trim()) return;
@@ -161,7 +181,7 @@ function Ingredients({ navigate, ingredients, setIngredients, setRecipes, setWee
         onClick={getRecipes}
         disabled={loading || ingredients.length === 0}
       >
-        {loading ? '🍳 레시피 찾는 중...' : filter === '일주일식단' ? '📅 일주일 식단 추천받기' : '🍳 레시피 추천받기'}
+        {loading ? loadingMessage : filter === '일주일식단' ? '📅 일주일 식단 추천받기' : '🍳 레시피 추천받기'}
       </button>
     </div>
   );
